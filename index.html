@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  
+  <meta name="theme-color" content="#126c5a" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/icon-180.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<title>Habit Tracker – harmonogram nawyków</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">HT</div>
+      <div>
+        <div class="title">Habit Tracker</div>
+        <div class="subtitle">Harmonogram dnia / nawyków (offline, w przeglądarce)</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <label class="field">
+        <span>Miesiąc</span>
+        <select id="monthSelect"></select>
+      </label>
+      <label class="field">
+        <span>Rok</span>
+        <input id="yearInput" type="number" min="2000" max="2100" />
+      </label>
+
+      <button class="btn" id="todayBtn" title="Ustaw bieżący miesiąc">Dzisiaj</button>
+      <button class="btn primary" id="printBtn" title="Drukuj / PDF">Drukuj</button>
+
+      <div class="spacer"></div>
+
+      <button class="btn" id="exportBtn">Eksport JSON</button>
+      <label class="btn fileBtn">
+        Import JSON
+        <input id="importInput" type="file" accept="application/json" hidden />
+      </label>
+      <button class="btn danger" id="resetBtn" title="Czyści dane (localStorage)">Reset</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="panel">
+      <div class="panelHeader">
+        <h2>Moje nawyki</h2>
+        <button class="btn primary" id="addHabitBtn">+ Dodaj nawyk</button>
+      </div>
+
+      <div id="habitList" class="habitList"></div>
+
+      <div class="hint">
+        Wskazówka: kliknij nazwę nawyku, żeby edytować. Dane zapisują się automatycznie w tej przeglądarce.
+      </div>
+    </section>
+
+    <section class="panel grow">
+      <div class="panelHeader">
+        <h2 id="monthTitle">Miesiąc</h2>
+        <div class="kpis">
+          <div class="kpi">
+            <div class="kpiLabel">Postęp</div>
+            <div class="kpiValue" id="overallPct">0%</div>
+          </div>
+          <div class="kpi">
+            <div class="kpiLabel">Zrobione</div>
+            <div class="kpiValue"><span id="doneCount">0</span>/<span id="totalCount">0</span></div>
+          </div>
+          <div class="kpi">
+            <div class="kpiLabel">Dni z kompletem</div>
+            <div class="kpiValue" id="perfectDays">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="weeks" id="weeksRow"></div>
+
+      <div class="tableWrap">
+        <table class="tracker" id="trackerTable" aria-label="Tabela nawyków">
+          <!-- JS renders -->
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="habitDialog">
+    <form method="dialog" class="dialogForm">
+      <h3 id="dialogTitle">Dodaj nawyk</h3>
+      <label class="field">
+        <span>Nazwa nawyku</span>
+        <input id="habitNameInput" type="text" maxlength="60" required />
+      </label>
+      <label class="field">
+        <span>Ikona (opcjonalnie, np. ✅💧🏋️📚)</span>
+        <input id="habitIconInput" type="text" maxlength="4" placeholder="✅" />
+      </label>
+      <div class="row" style="display:flex; gap:12px; align-items:end; flex-wrap:wrap;">
+        <label style="flex:1; min-width:180px;">
+          <span style="display:block; margin-bottom:6px; opacity:.9;">Przypomnienia</span>
+          <input id="reminderEnabledInput" type="checkbox" />
+          <span style="margin-left:6px;">Włącz</span>
+        </label>
+        <label style="min-width:140px;">
+          <span style="display:block; margin-bottom:6px; opacity:.9;">Godzina</span>
+          <input id="reminderTimeInput" type="time" value="20:00" />
+        </label>
+      </div>
+      <div style="margin-top:10px; display:flex; gap:12px; align-items:end; flex-wrap:wrap;">
+        <label style="min-width:220px;">
+          <span style="display:block; margin-bottom:6px; opacity:.9;">Cel tygodniowy (dni / 7)</span>
+          <input id="weeklyGoalInput" type="number" min="1" max="7" step="1" value="4" />
+        </label>
+      </div>
+      <menu class="dialogMenu">
+        <button class="btn" value="cancel">Anuluj</button>
+        <button class="btn primary" id="saveHabitBtn" value="default">Zapisz</button>
+      </menu>
+      <input type="hidden" id="habitIdInput" />
+    </form>
+  </dialog>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+      });
+    }
+  </script>
+
+
+  <script src="app.js"></script>
+</body>
+</html>

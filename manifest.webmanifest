@@ -1,0 +1,28 @@
+{
+  "name": "Habit Tracker – harmonogram nawyków",
+  "short_name": "HabitTracker",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#126c5a",
+  "description": "Harmonogram nawyków offline. Zapis danych w urządzeniu, eksport/import JSON.",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
